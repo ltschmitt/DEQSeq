@@ -1,0 +1,45 @@
+############# DEQSeq yaml file ############# 
+# Please use full file paths
+
+
+###### Arguments ######
+# General setup
+output_prefix: DEQSeq-output/ # define the prefix you want the data to be put, use / at the end for output folders
+fastq_reads: # basecalled nanopore reads in one file
+num_threads: # number of cpu threads you want to use
+
+# References
+protein_umi_fasta: # sequence containing the protein to polish next to the UMI, if possible make reference +/-100 bp of the elements
+protein_locations: # name and 1-based location of proteins, multiple references/proteins should be comma seperated without space
+umi_locations:  # name and 1-based location of umis, multiple umi locations should be comma seperated without space
+target_sites_fasta: # sequence containing the target sites and/or the possible editing outcomes, if possible make reference +/-100 bp of the elements
+target_site_locations: # only use when you want to extract a specific region (i.e. with base editing); name and 1-based location of target sites, multiple ts locations should be comma seperated without space
+# locations example: ref1:20-1020,ref1:1080:2020
+
+# Filtering
+minimum_fragment_length: # only use reads that are this size or bigger
+minimum_quality: # only use reads that have an average phred quality of at least this value
+minimum_cluster_size: # discard all clusters that have less reads than this
+
+# Clustering
+umi_cluster_identity1: 0.60 # numeric value, necessery identity of sequenced UMIs to belong to one cluster
+umi_cluster_identity2: 0.75 # numeric value, identity value for second round of clustering
+# 0.60 & 0.75 works well with r9.4.1 flowcells basecalled with guppy 5.0.7 on the high accuracy model
+
+# Polish parameters
+medeka_model: r941_min_hac_g507 # model medaka should use to polish the sequence. Depends on model used for basecalling. 
+                                # To list available models: medaka tools list_models
+
+# Cleanup
+cleanup_lvl: 1 # 1 = remove processing files, leave some stuff for cluster checkup, 2 = remove everything except final output
+
+
+###### Application Locations ######
+Rscript_location: Rscript
+samtools_location: samtools
+filtlong_location: filtlong
+minmap2_location: minimap2
+parallel_location: parallel
+racon_location: racon
+medaka_consensus_location: medaka_consensus
+vsearch_location: vsearch
