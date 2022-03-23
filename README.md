@@ -25,6 +25,7 @@ R packages:
 ```{R}
 # tidyverse installation
 install.packages('tidyverse')
+install.packages('stringdist')
 
 # GenomicAlignments installation
 if (!require("BiocManager", quietly = TRUE))

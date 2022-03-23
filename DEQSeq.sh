@@ -171,7 +171,7 @@ fi
 # evaluate, extract protein, count edits and combine data
 if [[ ${STARTFROM} -lt 8 ]]; then
       echo "####### 7. Summarise #######"
-      ${RLOC} ${SCRIPTDIR}/7_extract_count.R ${OUTPREFIX} ${PROTUMIREF} ${UMILOC} ${PROTLOC} || exit 1
+      ${RLOC} ${SCRIPTDIR}/7_extract_count.R ${OUTPREFIX} ${PROTUMIREF} ${UMILOC} ${PROTLOC} ${MINCLUSTSIZE} || exit 1
 fi
 
 if [[ ${STARTFROM} -lt 9 ]]; then
