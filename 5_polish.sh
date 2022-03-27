@@ -34,7 +34,7 @@ dowork() {
       # align clusters to reference
       ${minimap2LOC} -ax map-ont -t 1 --secondary=no $PROTUMIREF $file > ${OUTPREFIX}5_cluster_aligned/$bname.unfilt.sam
       # reduce reads to most mapped reference if there are multiple references
-      if [[ $(grep '^>' references/rec_umi.fa | wc -l) -gt 1 ]] ; then
+      if [[ $(grep '^>' $PROTUMIREF | wc -l) -gt 1 ]] ; then
 	    refname=$(${samtoolsLOC} view ${OUTPREFIX}5_cluster_aligned/$bname.unfilt.sam | cut -f 3 | sort | uniq -c | sort -n | tail -n 1 | awk '{print $2}')
 	    ${samtoolsLOC} view -H ${OUTPREFIX}5_cluster_aligned/$bname.unfilt.sam > ${OUTPREFIX}5_cluster_aligned/$bname.sam
 	    ${samtoolsLOC} view ${OUTPREFIX}5_cluster_aligned/$bname.unfilt.sam | awk -v refname=$refname '{ if ($3 == refname) { print } }' >> ${OUTPREFIX}5_cluster_aligned/$bname.sam
