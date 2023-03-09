@@ -32,7 +32,7 @@ dowork() {
       bname=$(basename -s .fastq $file)
 
       # align clusters to reference
-      ${minimap2LOC} -ax map-ont -t 1 --secondary=no $PROTUMIREF $file > ${OUTPREFIX}5_cluster_aligned/$bname.unfilt.sam
+      ${minimap2LOC} -ax map-ont -t 1 --secondary=no $PROTUMIREF $file | ${samtoolsLOC} view -hF 2048 > ${OUTPREFIX}5_cluster_aligned/$bname.unfilt.sam
       # reduce reads to most mapped reference if there are multiple references
       if [[ $(grep '^>' $PROTUMIREF | wc -l) -gt 1 ]] ; then
 	    refname=$(${samtoolsLOC} view ${OUTPREFIX}5_cluster_aligned/$bname.unfilt.sam | cut -f 3 | sort | uniq -c | sort -n | tail -n 1 | awk '{print $2}')
@@ -60,6 +60,7 @@ files=$(find ${OUTPREFIX}4_cluster_fastq/ -name "*.fastq")
 # parallel processing of function
 ${parallelLOC} -k -j $THREADS dowork {} ${PROTUMIREF} ${OUTPREFIX} ${MODEL} ${minimap2LOC} ${samtoolsLOC} ${medaka_consensusLOC} ${raconLOC} ::: $files
 
+#exit 1
 
 # write table header
 echo -e "Cluster\tID\tProtein_score" > ${OUTPREFIX}5_cluster_polished_aligned/cluster_eval.tsv

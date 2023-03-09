@@ -9,8 +9,8 @@ fastq_reads: # basecalled nanopore reads in one file
 num_threads: # number of cpu threads you want to use
 
 # References
-protein_umi_fasta: # sequence containing the protein to polish next to the UMI, if possible make reference +/-100 bp of the elements
-protein_locations: # name and 1-based location of proteins, multiple references/proteins should be comma seperated without space
+protein_umi_fasta: # sequence containing the protein gene to polish next to the UMI, if possible make the reference +200 bp after the UMI and 30+ bp before the protein gene.
+protein_locations: # name and 1-based location of protein genes, multiple references/proteins should be comma seperated without space
 umi_locations:  # name and 1-based location of umis, multiple umi locations should be comma seperated without space
 target_sites_fasta: # sequence containing the target sites and/or the possible editing outcomes, if possible make reference +/-100 bp of the elements
 target_site_locations: # only use when you want to extract a specific region (i.e. with base editing); name and 1-based location of target sites, multiple ts locations should be comma seperated without space

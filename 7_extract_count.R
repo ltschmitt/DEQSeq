@@ -100,7 +100,7 @@ udat %>% write_csv(paste0(OUTPREFIX,'Counts_Seqs.csv'))
 # makes seperate count for all the detected ts sequences > 0.5 % occurance
 if(suppressWarnings(length(tsce$TS_sequence)) > 0){
       #tsce_seqsum = tsce %>% group_by(Cluster,TS_sequence) %>% count() %>% group_by(Cluster) %>% mutate(Percent = n/sum(n)*100) %>% group_by(Cluster,TS_sequence)
-      tsce_seqsum = tsce %>% inner_join(umiclusters,'Cluster') %>% group_by(Cluster,TS) %>% arrange(-n()) %>% group_by(NewCluster,TS) %>% mutate(MainCluster = Cluster[1]) %>% group_by(MainCluster,TS_sequence) %>% count() %>% group_by(MainCluster) %>% mutate(Percent = n/sum(n)*100) %>% group_by(MainCluster,TS_sequence)
+      tsce_seqsum = tsce %>% inner_join(umiclusters,'Cluster') %>% group_by(Cluster,TS) %>% arrange(-n()) %>% group_by(NewCluster,TS) %>% mutate(MainCluster = Cluster[1]) %>% group_by(MainCluster,TS_sequence,TS,TS_location) %>% count() %>% group_by(MainCluster) %>% mutate(Percent = n/sum(n)*100) %>% group_by(MainCluster,TS_sequence)
       write_csv(tsce_seqsum,paste0(OUTPREFIX,'TS_sequence_counts.csv'))
 }
 

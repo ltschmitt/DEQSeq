@@ -13,19 +13,21 @@ I recommend to install medaka over conda:
 ```
 conda create -n medaka -c conda-forge -c bioconda medaka
 ```
-This has the advantage that you download and environment that already contains samtools, minimap2, racon, medaka.
-Then you only need to install filtlong, parallel, vsearch, and the R packages
+This has the advantage that you download and environment that already contains samtools, minimap2, medaka.
+Then you only need to install racon, filtlong, parallel, vsearch, and the R packages
 
 ```
+conda install -c bioconda racon
 git clone https://github.com/rrwick/Filtlong
 git clone https://github.com/torognes/vsearch
 ```
 
-R packages:
+Install R packages in R:
 ```{R}
 # tidyverse installation
 install.packages('tidyverse')
 install.packages('stringdist')
+install.packages('data.table')
 
 # GenomicAlignments installation
 if (!require("BiocManager", quietly = TRUE))
