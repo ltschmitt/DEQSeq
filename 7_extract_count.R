@@ -67,7 +67,7 @@ pts = tscounts %>% ggplot(aes(x = TS, y = TS_score)) + geom_boxplot() + labs(sub
 ggsave(paste0(OUTPREFIX,'ts_eval.pdf'), pts, width = 8, height = 6)
 
 # combine and set alignment score QC outcome, I am penalizing bad protein scores more, a mix up of proteins is more likely than a messed up ts sequence
-tsce = inner_join(evals,tscounts, c('Cluster','ID')) %>% group_by(TS) %>% mutate(PassQC = TS_score > 0.6*median(TS_score) & Protein_score > 0.8*median(Protein_score))
+tsce = inner_join(evals,tscounts, c('Cluster','ID'), multiple = 'all') %>% group_by(TS) %>% mutate(PassQC = TS_score > 0.6*median(TS_score) & Protein_score > 0.8*median(Protein_score))
 # TODO: multiple proteins might have multiple lengths - therefore I have to make a mean score for each protein when dealing with multiple proteins
 
 # write
@@ -80,7 +80,7 @@ mean_prot_score = tsce %>% pull(Protein_score) %>% mean()
 tsce = tsce %>% group_by(Cluster) %>% filter(mean(Protein_score) > mean_prot_score * 0.9) %>% filter(sum(PassQC)/n() > 0.8) %>% filter(PassQC)
 
 # summarise/count
-tsce_sum = tsce %>% group_by(Cluster,TS) %>% summarise(n = n(), Mean_protein_score = round(mean(Protein_score),0), Mean_ts_score = round(mean(TS_score),0), .groups = 'drop') %>% group_by(Cluster) #%>% filter(n >= MINCLUSTSIZE)
+tsce_sum = tsce %>% group_by(Cluster,TS) %>% summarise(n = length(unique(ID)), Mean_protein_score = round(mean(Protein_score),0), Mean_ts_score = round(mean(TS_score),0), .groups = 'drop') %>% group_by(Cluster) #%>% filter(n >= MINCLUSTSIZE)
 
 # combine
 dat = inner_join(tsce_sum,seqs_df, 'Cluster') 
@@ -100,7 +100,7 @@ udat %>% write_csv(paste0(OUTPREFIX,'Counts_Seqs.csv'))
 # makes seperate count for all the detected ts sequences > 0.5 % occurance
 if(suppressWarnings(length(tsce$TS_sequence)) > 0){
       #tsce_seqsum = tsce %>% group_by(Cluster,TS_sequence) %>% count() %>% group_by(Cluster) %>% mutate(Percent = n/sum(n)*100) %>% group_by(Cluster,TS_sequence)
-      tsce_seqsum = tsce %>% inner_join(umiclusters,'Cluster') %>% group_by(Cluster,TS) %>% arrange(-n()) %>% group_by(NewCluster,TS) %>% mutate(MainCluster = Cluster[1]) %>% group_by(MainCluster,TS_sequence,TS,TS_location) %>% count() %>% group_by(MainCluster) %>% mutate(Percent = n/sum(n)*100) %>% group_by(MainCluster,TS_sequence)
+      tsce_seqsum = tsce %>% inner_join(umiclusters,'Cluster') %>% group_by(NewCluster,TS) %>% mutate(MainCluster = Cluster[1]) %>% group_by(MainCluster,TS_sequence,TS,TS_location) %>% count() %>% group_by(MainCluster) %>% mutate(Percent = n/sum(n)*100)
       write_csv(tsce_seqsum,paste0(OUTPREFIX,'TS_sequence_counts.csv'))
 }
 
