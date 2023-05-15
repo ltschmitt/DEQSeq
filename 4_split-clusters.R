@@ -20,7 +20,7 @@ if(!is.na(UMIIDENT2)){
 } 
 
 # filter clusters
-ucf = uc %>% group_by(Cluster) %>% mutate(Size = n()) %>% filter(Size >= as.integer(MINCLUSTSIZE)) %>% arrange(-Size,Cluster) %>% mutate(Cluster = as.integer(fct_inorder(as.factor(as.character(Cluster))))) 
+ucf = uc %>% group_by(Cluster) %>% mutate(Size = n()) %>% filter(Size >= as.integer(MINCLUSTSIZE)) %>% arrange(-Size,Cluster) %>% ungroup() %>% mutate(Cluster = as.integer(fct_inorder(as.factor(as.character(Cluster)))))
 
 write(paste0('Clusters: ', length(unique(ucf$Cluster)), '\n', 'Reads used: ', length((ucf$Cluster))), file = paste0(OUTPREFIX,'cluster_stats.txt'))
 message(paste0('Clusters: ', length(unique(ucf$Cluster)), '    ', 'Reads used: ', length((ucf$Cluster))))
@@ -36,12 +36,12 @@ while(T) {
       chunk = readLines(con, chunksize)
       if(length(chunk) == 0) break
       else {
-	    chunk %>% as_tibble() %>% separate_wider_delim(value, delim = '\t', names = c("ID","Seq", "Qual")) %>% inner_join(ucf,'ID') %>% transmute(Cluster, output = paste0('@',ID,'\n',Seq,'\n+\n',Qual)) %>% group_by(Cluster) %>% group_walk(~ write(.x$output,file = paste0(OUTPREFIX,'4_cluster_fastq_test/Cluster_',unique(.y$Cluster),'.fastq'), sep = '\n', append = T))
+	    chunk %>% as_tibble() %>% separate_wider_delim(value, delim = '\t', names = c("ID","Seq", "Qual")) %>% inner_join(ucf,'ID') %>% transmute(Cluster, output = paste0('@',ID,'\n',Seq,'\n+\n',Qual)) %>% group_by(Cluster) %>% group_walk(~ write(.x$output,file = paste0(OUTPREFIX,'4_cluster_fastq/Cluster_',unique(.y$Cluster),'.fastq'), sep = '\n', append = T))
       }
 }
 
 # TODO: check if files are already present before append writing the split fastqs.
 
 # data table variant, that uses more memory
-#data.table::fread(cmd = paste0("samtools view ",OUTPREFIX,"1_preprocessing/regionfiltered.bam | awk '{print $1,$10,$11}'"), col.names = c('ID','Seq','Qual'), quote = "") %>% inner_join(ucf,'ID') %>% transmute(Cluster, output = paste0('@',ID,'\n',Seq,'\n+\n',Qual)) %>% group_by(Cluster) %>% group_walk(~ write(.x$output,file = paste0(OUTPREFIX,'4_cluster_fastq_test/Cluster_',unique(.y$Cluster),'.fastq'), sep = '\n'))
+#data.table::fread(cmd = paste0("samtools view ",OUTPREFIX,"1_preprocessing/regionfiltered.bam | awk '{print $1,$10,$11}'"), col.names = c('ID','Seq','Qual'), quote = "") %>% inner_join(ucf,'ID') %>% transmute(Cluster, output = paste0('@',ID,'\n',Seq,'\n+\n',Qual)) %>% group_by(Cluster) %>% group_walk(~ write(.x$output,file = paste0(OUTPREFIX,'4_cluster_fastq/Cluster_',unique(.y$Cluster),'.fastq'), sep = '\n'))
 
