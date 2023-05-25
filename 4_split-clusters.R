@@ -11,7 +11,7 @@ UMIIDENT2 = suppressWarnings(as.numeric(args[3]))
 # read clusters
 hnames = c('Type','Cluster','length_size','Similarity','Orientation','x1','x2','CIGAR','ID','Centroid_ID')
 uc = read_tsv(paste0(OUTPREFIX,'2_3_vsearch/uc.tab'), col_names = hnames,show_col_types = FALSE)[c(9,1:3)]
-uc = uc %>% filter(Type %in% c('S','H'))
+uc = uc %>% filter(Type %in% c('S','H')) %>% mutate(Cluster = as.integer(Cluster))
 
 if(!is.na(UMIIDENT2)){
       uc2 = read_tsv(paste0(OUTPREFIX,'2_3_vsearch/uc2.tab'), col_names = hnames,show_col_types = FALSE)[c(9,1:3)]

@@ -24,6 +24,6 @@ ${samtoolsLOC} view ${OUTPREFIX}1_preprocessing/regionfiltered.bam | awk 'BEGIN 
 
 
 
-
+# TODO: Test if skipping filtlong increases speed. Quality filtering is also done by guppy.
 
 
