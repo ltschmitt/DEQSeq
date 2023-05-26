@@ -56,12 +56,6 @@ else
     samtoolsLOC=samtools
 fi
 
-if grep -q 'filtlong_location:' ${yaml} ; then
-    filtlongLOC=$(grep 'filtlong_location:' ${yaml} | awk '{print $2}')
-else
-    filtlongsLOC=filtlong
-fi
-
 if grep -q 'Rscript_location:' ${yaml} ; then
     RLOC=$(grep 'Rscript_location:' ${yaml} | awk '{print $2}')
 else
@@ -131,7 +125,7 @@ fi
 # filter reads and align to Protein UMI reference
 if [[ ${STARTFROM} -lt 2 ]]; then
       echo "####### 1. Preprocessing #######"
-      bash ${SCRIPTDIR}/1_preprocessing.sh ${OUTPREFIX} ${PROTUMIREF} ${READS} ${MINLEN} ${MINQUAL} ${THREADS} ${filtlongLOC} ${minimap2LOC} ${samtoolsLOC} || exit 1
+      bash ${SCRIPTDIR}/1_preprocessing.sh ${OUTPREFIX} ${PROTUMIREF} ${READS} ${MINLEN} ${MINQUAL} ${THREADS} ${minimap2LOC} ${samtoolsLOC} || exit 1
 fi
 
 # extract UMIs
