@@ -4,7 +4,7 @@
 Memory requirements: ~2x input fastq size
 Hard drive requirements: ~7x input fastq size
 
-Programs: R, samtools, filtlong, minimap2, parallel, racon, medaka, vsearch
+Programs: R, samtools, minimap2, parallel, racon, medaka, vsearch
 R packages: GenomicAlignments, tidyverse
 
 # Installation
@@ -14,11 +14,10 @@ I recommend to install medaka over conda:
 conda create -n medaka -c conda-forge -c bioconda medaka
 ```
 This has the advantage that you download and environment that already contains samtools, minimap2, medaka.
-Then you only need to install racon, filtlong, parallel, vsearch, and the R packages
+Then you only need to install racon, parallel, vsearch, and the R packages
 
 ```
 conda install -c bioconda racon
-git clone https://github.com/rrwick/Filtlong
 git clone https://github.com/torognes/vsearch
 ```
 

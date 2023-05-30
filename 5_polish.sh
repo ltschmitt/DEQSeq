@@ -46,7 +46,7 @@ dowork() {
       # index fastq for racon and medaka
       ${samtoolsLOC} faidx $file
       # polish with racon
-      ${raconLOC} -m 8 -x -6 -g -8 -w 500 --no-trimming -t 1 $file ${OUTPREFIX}5_cluster_aligned/$bname.sam $PROTUMIREF > ${OUTPREFIX}5_racon/$bname.fasta
+      ${raconLOC} -m 8 -x -6 -g -8 -w 500 -t 1 $file ${OUTPREFIX}5_cluster_aligned/$bname.sam $PROTUMIREF > ${OUTPREFIX}5_racon/$bname.fasta
       # polish with medaka
       ${medaka_consensusLOC} -i $file -d ${OUTPREFIX}5_racon/$bname.fasta -o ${OUTPREFIX}5_medaka/$bname -t 1 -m r941_min_hac_g507 
       # align clusters to polished references
