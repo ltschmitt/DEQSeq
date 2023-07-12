@@ -3,11 +3,9 @@
 OUTPREFIX=$1
 PROTUMIREF=$2 
 READS=$3 
-MINLEN=$4 
-MINQUAL=$5 
-THREADS=$6
-minimap2LOC=$7
-samtoolsLOC=$8
+THREADS=$4
+minimap2LOC=$5
+samtoolsLOC=$6
 
 mkdir -p ${OUTPREFIX}1_preprocessing
 

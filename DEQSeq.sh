@@ -104,8 +104,6 @@ PROTLOC=$(grep 'protein_locations:' ${yaml} | awk '{print $2}')
 TSREF=$(grep 'target_sites_fasta:' ${yaml} | awk '{print $2}')
 TSLOC=$(grep 'target_site_locations:' ${yaml} | awk '{print $2}')
 
-MINLEN=$(grep 'minimum_read_length:' ${yaml} | awk '{print $2}')
-MINQUAL=$(grep 'minimum_read_quality:' ${yaml} | awk '{print $2}')
 MINCLUSTSIZE=$(grep 'minimum_cluster_size:' ${yaml} | awk '{print $2}')
 
 UMIIDENT1=$(grep 'umi_cluster_identity1:' ${yaml} | awk '{print $2}')
@@ -125,7 +123,7 @@ fi
 # filter reads and align to Protein UMI reference
 if [[ ${STARTFROM} -lt 2 ]]; then
       echo "####### 1. Preprocessing #######"
-      bash ${SCRIPTDIR}/1_preprocessing.sh ${OUTPREFIX} ${PROTUMIREF} ${READS} ${MINLEN} ${MINQUAL} ${THREADS} ${minimap2LOC} ${samtoolsLOC} || exit 1
+      bash ${SCRIPTDIR}/1_preprocessing.sh ${OUTPREFIX} ${PROTUMIREF} ${READS} ${THREADS} ${minimap2LOC} ${samtoolsLOC} || exit 1
 fi
 
 # extract UMIs

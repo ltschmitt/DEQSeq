@@ -13,6 +13,9 @@ medaka_consensusLOC=$7
 raconLOC=$8
 parallelLOC=$9
 
+# prevent medaka from using GPU
+export CUDA_VISIBLE_DEVICES=""
+
 mkdir ${OUTPREFIX}5_cluster_aligned
 mkdir ${OUTPREFIX}5_racon
 mkdir ${OUTPREFIX}5_medaka
@@ -48,7 +51,7 @@ dowork() {
       # polish with racon
       ${raconLOC} -m 8 -x -6 -g -8 -w 500 -t 1 $file ${OUTPREFIX}5_cluster_aligned/$bname.sam $PROTUMIREF > ${OUTPREFIX}5_racon/$bname.fasta
       # polish with medaka
-      ${medaka_consensusLOC} -i $file -d ${OUTPREFIX}5_racon/$bname.fasta -o ${OUTPREFIX}5_medaka/$bname -t 1 -m r941_min_hac_g507 
+      ${medaka_consensusLOC} -i $file -d ${OUTPREFIX}5_racon/$bname.fasta -o ${OUTPREFIX}5_medaka/$bname -t 1 -m $MODEL
       # align clusters to polished references
       ${minimap2LOC} -ax map-ont -t 1 --secondary=no ${OUTPREFIX}5_medaka/$bname/consensus.fasta $file | ${samtoolsLOC} view -hF 2048 > ${OUTPREFIX}5_cluster_polished_aligned/$bname.sam
 }

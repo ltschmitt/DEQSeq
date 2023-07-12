@@ -5,7 +5,7 @@
 ###### Arguments ######
 # General setup
 output_prefix: DEQSeq-output/ # define the prefix you want the data to be put, use / at the end for output folders
-fastq_reads: # basecalled nanopore reads in one file
+fastq_reads: # basecalled nanopore reads in one file, can be a gzip of a fastq
 num_threads: # number of cpu threads you want to use
 
 # References
@@ -18,17 +18,16 @@ target_site_locations: # only use when you want to extract a specific region (i.
 
 # Clustering
 minimum_cluster_size: # discard all clusters that have less reads than this
-umi_cluster_identity1: 0.60 # numeric value, necessery identity of sequenced UMIs to belong to one cluster
+umi_cluster_identity1: 0.70 # numeric value, necessery identity of sequenced UMIs to belong to one cluster
 umi_cluster_identity2: 0.75 # numeric value, identity value for second round of clustering
-# 0.60 & 0.75 works well with r9.4.1 flowcells basecalled with guppy 5.0.7 on the high accuracy model
+# 0.70 & 0.75 works well with r9.4.1 flowcells basecalled with guppy 5.0.7 on the high accuracy model
 
 # Polish parameters
 medeka_model: r941_min_hac_g507 # model medaka should use to polish the sequence. Depends on model used for basecalling. 
-                                # To list available models: medaka tools list_models
+
 
 # Cleanup
 cleanup_lvl: 1 # 1 = remove processing files, leave some stuff for cluster checkup, 2 = remove everything except final output
-
 
 ###### Application Locations ######
 Rscript_location: Rscript
